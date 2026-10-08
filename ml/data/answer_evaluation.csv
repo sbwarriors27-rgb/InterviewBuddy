@@ -1,0 +1,9 @@
+student_answer,ideal_answer,score
+"A stack follows LIFO, so the last item pushed is the first item removed.","A stack is a linear data structure that follows LIFO: the last element inserted is the first element removed.",95
+"A queue removes the newest item first.","A queue is a linear data structure that follows FIFO: the first element inserted is the first element removed.",25
+"Normalization reduces duplicate data and update anomalies by splitting data into related tables.","Database normalization organizes data into related tables to reduce redundancy and prevent insert, update, and delete anomalies.",90
+"Normalization means making a database faster.","Database normalization organizes data into related tables to reduce redundancy and prevent insert, update, and delete anomalies.",30
+"I would reproduce the issue, inspect logs, identify the root cause, apply a small fix, and add a regression test.","A strong debugging process reproduces the issue, examines logs and evidence, identifies the root cause, applies a focused fix, and adds a regression test.",92
+"I would immediately rewrite the whole application without checking the logs.","A strong debugging process reproduces the issue, examines logs and evidence, identifies the root cause, applies a focused fix, and adds a regression test.",10
+"Polymorphism allows one interface to represent different underlying implementations.","Polymorphism allows objects of different classes to be treated through the same interface while providing class-specific behavior.",88
+"Polymorphism means a class can only have one method.","Polymorphism allows objects of different classes to be treated through the same interface while providing class-specific behavior.",20

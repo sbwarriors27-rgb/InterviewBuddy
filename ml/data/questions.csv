@@ -1,0 +1,125 @@
+company,role,subject,topic,question,type,difficulty,ideal_answer
+TCS,Software Engineer,DSA,Arrays,What is an array and when would you use it?,Technical,Easy,An array is a linear data structure that stores elements in contiguous memory and provides efficient indexed access.
+TCS,Software Engineer,DSA,Linked Lists,What is the difference between an array and a linked list?,Technical,Easy,"An array stores elements contiguously and supports fast indexing, while a linked list stores nodes connected by pointers."
+TCS,Software Engineer,DSA,Stack,Explain the LIFO principle of a stack.,Technical,Easy,"A stack follows LIFO, meaning the last element inserted is the first element removed."
+TCS,Software Engineer,DSA,Queue,Explain the FIFO principle of a queue.,Technical,Easy,"A queue follows FIFO, meaning the first element inserted is the first element removed."
+TCS,Software Engineer,DSA,Trees,What is a binary search tree?,Technical,Medium,A binary search tree is a binary tree where values in the left subtree are smaller and values in the right subtree are larger according to its ordering rule.
+TCS,Software Engineer,DSA,Sorting,What is the time complexity of merge sort?,Technical,Easy,"Merge sort has O(n log n) time complexity in the best, average, and worst cases."
+TCS,Software Engineer,DSA,Searching,How does binary search work?,Technical,Easy,Binary search repeatedly compares the target with the middle element of a sorted collection and discards half of the remaining search space.
+TCS,Software Engineer,DSA,Hashing,What is a hash table?,Technical,Easy,A hash table stores key-value pairs using a hash function to map keys to positions.
+TCS,Software Engineer,DBMS,Normalization,What is database normalization?,Technical,Easy,"Normalization organizes data into related tables to reduce redundancy and prevent insert, update, and delete anomalies."
+TCS,Software Engineer,DBMS,Keys,What is a primary key?,Technical,Easy,A primary key uniquely identifies each row in a table and should contain unique non-NULL values.
+TCS,Software Engineer,DBMS,Joins,What is an inner join?,Technical,Easy,An inner join returns rows where the join condition matches in both tables.
+TCS,Software Engineer,DBMS,Transactions,What are ACID properties?,Technical,Easy,"ACID stands for Atomicity, Consistency, Isolation, and Durability, which help keep database transactions reliable."
+TCS,Software Engineer,OOP,Encapsulation,What is encapsulation?,Technical,Easy,Encapsulation bundles data and methods together and controls access to internal state.
+TCS,Software Engineer,OOP,Inheritance,What is inheritance?,Technical,Easy,"Inheritance allows a class to acquire properties and behavior from another class, supporting reuse and hierarchical relationships."
+TCS,Software Engineer,OOP,Polymorphism,What is polymorphism?,Technical,Easy,Polymorphism allows the same interface or method call to represent different implementations.
+TCS,Software Engineer,OOP,Abstraction,What is abstraction?,Technical,Easy,Abstraction exposes essential behavior while hiding unnecessary implementation details.
+TCS,Software Engineer,OS,Processes,What is the difference between a process and a thread?,Technical,Easy,"A process is an independent execution unit with its own address space, while a thread is an execution unit within a process and shares its resources."
+TCS,Software Engineer,OS,Deadlock,What is deadlock?,Technical,Medium,Deadlock occurs when processes permanently wait for resources held by one another.
+TCS,Software Engineer,OS,Memory,What is virtual memory?,Technical,Easy,Virtual memory uses secondary storage to extend the apparent memory available to processes and provides a virtual address space.
+TCS,Software Engineer,OS,Scheduling,What is CPU scheduling?,Technical,Easy,CPU scheduling selects which ready process or thread should run next according to a scheduling policy.
+TCS,Software Engineer,Computer Networks,OSI,Name the seven layers of the OSI model.,Technical,Easy,"The seven layers are Physical, Data Link, Network, Transport, Session, Presentation, and Application."
+TCS,Software Engineer,Computer Networks,TCP UDP,What is the difference between TCP and UDP?,Technical,Easy,"TCP provides reliable ordered delivery and congestion control, while UDP has lower overhead and does not guarantee delivery or ordering."
+TCS,Software Engineer,Computer Networks,HTTP,What is HTTP?,Technical,Easy,HTTP is an application-layer protocol used for communication between clients and servers.
+TCS,Software Engineer,Computer Networks,IP,What is the purpose of an IP address?,Technical,Easy,An IP address identifies a network endpoint so packets can be addressed and routed across an IP network.
+TCS,Software Engineer,Aptitude,Percentages,A product price increases by 20% and then decreases by 20%. Is the final price the same?,Aptitude,Easy,"No. The final price becomes 96% of the original price, so it is 4% lower."
+TCS,Software Engineer,Aptitude,Profit and Loss,What is the difference between cost price and selling price?,Aptitude,Easy,"Cost price is the amount paid to acquire or produce an item, while selling price is the amount received when it is sold."
+TCS,Software Engineer,Aptitude,Ratio,"If two quantities are in the ratio 2:3 and their total is 50, what are the quantities?",Aptitude,Easy,"The total ratio is 5 parts, so each part is 10. The quantities are 20 and 30."
+TCS,Software Engineer,HR,Introduction,How would you introduce yourself in an interview?,Behavioral,Easy,"A strong introduction briefly covers education or experience, relevant skills, projects or achievements, and the type of role being pursued."
+TCS,Software Engineer,HR,Teamwork,How would you handle a disagreement with a teammate?,Behavioral,Easy,"I would listen to the teammate, clarify the shared goal, discuss evidence and alternatives calmly, and agree on a practical solution."
+,,,,,,,
+,,,,,,,
+Infosys,Systems Engineer,DSA,Arrays,What is an array?,Technical,Easy,An array is a linear data structure that stores elements in contiguous memory and provides indexed access.
+Infosys,Systems Engineer,DSA,Linked Lists,What is a linked list?,Technical,Easy,A linked list is a collection of nodes where each node stores data and a reference to the next node.
+Infosys,Systems Engineer,DSA,Stack,What are the main operations of a stack?,Technical,Easy,"The main stack operations are push, pop, and peek or top."
+Infosys,Systems Engineer,DSA,Queue,What are the main operations of a queue?,Technical,Easy,The main queue operations are enqueue for insertion and dequeue for removal.
+Infosys,Systems Engineer,DSA,Trees,What is a binary tree?,Technical,Easy,A binary tree is a tree data structure in which each node has at most two children.
+Infosys,Systems Engineer,DSA,Sorting,What is the time complexity of quicksort in the average case?,Technical,Medium,Quicksort has an average-case time complexity of O(n log n).
+Infosys,Systems Engineer,DSA,Searching,What is linear search?,Technical,Easy,Linear search checks elements sequentially until the target is found or the collection ends.
+Infosys,Systems Engineer,DSA,Hashing,What is hashing?,Technical,Easy,Hashing uses a hash function to map data or keys to positions for efficient lookup.
+Infosys,Systems Engineer,DBMS,Normalization,Why is normalization used in databases?,Technical,Easy,"Normalization reduces data redundancy and helps prevent insert, update, and delete anomalies."
+Infosys,Systems Engineer,DBMS,Keys,What is a foreign key?,Technical,Easy,A foreign key is a column or set of columns that references a key in another table to establish a relationship.
+Infosys,Systems Engineer,DBMS,Joins,What is a left join?,Technical,Easy,"A left join returns all rows from the left table and matching rows from the right table, with NULLs when there is no match."
+Infosys,Systems Engineer,DBMS,Transactions,What is a database transaction?,Technical,Easy,A transaction is a logical unit of database operations that should be completed reliably according to transaction rules.
+Infosys,Systems Engineer,OOP,Encapsulation,Give an example of encapsulation.,Technical,Easy,Keeping class data private and accessing it through controlled methods such as getters and setters is an example of encapsulation.
+Infosys,Systems Engineer,OOP,Inheritance,What are the benefits of inheritance?,Technical,Easy,Inheritance promotes code reuse and allows related classes to share common properties and behavior.
+Infosys,Systems Engineer,OOP,Polymorphism,What is method overloading?,Technical,Medium,Method overloading allows multiple methods with the same name but different parameter lists in the same class.
+Infosys,Systems Engineer,OOP,Abstraction,How is abstraction achieved in object-oriented programming?,Technical,Medium,"Abstraction can be achieved using interfaces, abstract classes, or other mechanisms that expose essential behavior while hiding implementation details."
+Infosys,Systems Engineer,OS,Processes,What is a process?,Technical,Easy,A process is a program in execution with its own execution state and resources.
+Infosys,Systems Engineer,OS,Threads,What is a thread?,Technical,Easy,A thread is a unit of execution within a process that shares resources with other threads of the same process.
+Infosys,Systems Engineer,OS,Deadlock,What are the necessary conditions for deadlock?,Technical,Medium,"The four conditions are mutual exclusion, hold and wait, no preemption, and circular wait."
+Infosys,Systems Engineer,OS,Memory,What is paging?,Technical,Medium,Paging divides logical memory into fixed-size pages and physical memory into frames to manage memory efficiently.
+Infosys,Systems Engineer,Computer Networks,OSI,What is the OSI model?,Technical,Easy,The OSI model is a seven-layer conceptual framework that describes network communication functions.
+Infosys,Systems Engineer,Computer Networks,TCP UDP,Why is TCP considered reliable?,Technical,Easy,"TCP provides reliable ordered delivery using acknowledgments, retransmission, sequencing, and flow and congestion control."
+Infosys,Systems Engineer,Computer Networks,DNS,What is DNS?,Technical,Easy,DNS translates human-readable domain names into IP addresses.
+Infosys,Systems Engineer,Computer Networks,HTTP,What is the difference between HTTP and HTTPS?,Technical,Easy,"HTTPS is HTTP protected by TLS encryption, providing confidentiality and integrity for communication."
+Infosys,Systems Engineer,Aptitude,Percentages,A number is increased by 10% and then by another 20%. What is the overall percentage increase?,Aptitude,Easy,The overall increase is 32% because 1.10 multiplied by 1.20 equals 1.32.
+Infosys,Systems Engineer,Aptitude,Time and Work,"If a person completes a task in 10 days, what fraction of the task is completed in one day?",Aptitude,Easy,The person completes one-tenth of the task in one day.
+Infosys,Systems Engineer,Aptitude,Ratio,"If the ratio of boys to girls is 3:2 and there are 25 students, how many are boys?",Aptitude,Easy,"The ratio has 5 parts, so each part is 5. Therefore, there are 15 boys."
+Infosys,Systems Engineer,HR,Strengths,What are your strengths?,Behavioral,Easy,"A good answer should mention relevant strengths such as problem solving, communication, teamwork, adaptability, and learning ability with brief examples."
+Infosys,Systems Engineer,HR,Weakness,What is one weakness you are working on?,Behavioral,Easy,A strong answer identifies a genuine manageable weakness and explains the specific steps being taken to improve it.
+Infosys,Systems Engineer,Software Engineering,Testing,Why is software testing important?,Technical,Easy,"Software testing helps identify defects, verify requirements, improve reliability, and reduce the risk of failures after release."
+,,,,,,,
+Accenture,Associate Software Engineer,DSA,Arrays,What is the difference between an array and a dynamic array?,Technical,Easy,"An array has a fixed size in many implementations, while a dynamic array can grow or shrink as elements are added or removed."
+Accenture,Associate Software Engineer,DSA,Strings,How would you reverse a string?,Technical,Easy,A string can be reversed by traversing its characters from the end to the beginning or by using an appropriate built-in method.
+Accenture,Associate Software Engineer,DSA,Stack,Where are stacks commonly used?,Technical,Easy,"Stacks are commonly used in function calls, expression evaluation, undo operations, and backtracking."
+Accenture,Associate Software Engineer,DSA,Queue,Where are queues commonly used?,Technical,Easy,"Queues are commonly used in scheduling, buffering, breadth-first search, and request processing."
+Accenture,Associate Software Engineer,DSA,Trees,What is tree traversal?,Technical,Easy,"Tree traversal is the process of visiting all nodes of a tree according to a specific order such as preorder, inorder, or postorder."
+Accenture,Associate Software Engineer,DSA,Graphs,What is a graph?,Technical,Easy,A graph is a data structure consisting of vertices and edges that represent relationships between entities.
+Accenture,Associate Software Engineer,DSA,Sorting,What is the purpose of sorting?,Technical,Easy,"Sorting arranges data according to an ordering rule, which can make searching, processing, and analysis easier."
+Accenture,Associate Software Engineer,DSA,Searching,What is the time complexity of binary search?,Technical,Easy,Binary search has O(log n) time complexity when performed on a sorted collection with efficient random access.
+Accenture,Associate Software Engineer,DBMS,Normalization,What is denormalization?,Technical,Medium,Denormalization intentionally introduces some redundancy to improve read performance or simplify queries when appropriate.
+Accenture,Associate Software Engineer,DBMS,Keys,What is a candidate key?,Technical,Medium,A candidate key is a minimal set of attributes that can uniquely identify each row in a table.
+Accenture,Associate Software Engineer,DBMS,Joins,What is a self join?,Technical,Medium,"A self join joins a table with itself, often to compare rows or represent relationships within the same table."
+Accenture,Associate Software Engineer,DBMS,SQL,What is the difference between DELETE and TRUNCATE?,Technical,Medium,"DELETE removes selected rows and can use a WHERE condition, while TRUNCATE removes all rows from a table as a bulk operation."
+Accenture,Associate Software Engineer,OOP,Classes,What is a class?,Technical,Easy,A class is a blueprint that defines the data and behavior that objects created from it can have.
+Accenture,Associate Software Engineer,OOP,Objects,What is an object?,Technical,Easy,An object is an instance of a class that contains state and behavior defined by that class.
+Accenture,Associate Software Engineer,OOP,Overriding,What is method overriding?,Technical,Medium,Method overriding occurs when a subclass provides its own implementation of a method defined by its superclass.
+Accenture,Associate Software Engineer,OOP,Constructors,What is a constructor?,Technical,Easy,A constructor is a special method or mechanism used to initialize an object when it is created.
+Accenture,Associate Software Engineer,OS,Processes,What is context switching?,Technical,Medium,Context switching is the process of saving the state of one running process or thread and loading the state of another.
+Accenture,Associate Software Engineer,OS,Scheduling,What is round-robin scheduling?,Technical,Easy,Round-robin scheduling assigns each ready process a fixed time slice in a cyclic order.
+Accenture,Associate Software Engineer,OS,Memory,What is a page fault?,Technical,Medium,A page fault occurs when a process accesses a memory page that is not currently available in physical memory.
+Accenture,Associate Software Engineer,OS,Deadlock,How can deadlock be prevented?,Technical,Medium,Deadlock can be prevented by ensuring that at least one of the necessary deadlock conditions cannot occur.
+Accenture,Associate Software Engineer,Computer Networks,IP,What is the difference between IPv4 and IPv6?,Technical,Easy,"IPv4 uses 32-bit addresses, while IPv6 uses 128-bit addresses and provides a much larger address space."
+Accenture,Associate Software Engineer,Computer Networks,DNS,Why is DNS important?,Technical,Easy,DNS allows users to access services using domain names instead of remembering numerical IP addresses.
+Accenture,Associate Software Engineer,Computer Networks,Protocols,What is a network protocol?,Technical,Easy,A network protocol is a set of rules that defines how devices communicate and exchange data over a network.
+Accenture,Associate Software Engineer,Computer Networks,HTTP,What is an HTTP status code?,Technical,Easy,An HTTP status code is a three-digit response code that indicates the result or status of an HTTP request.
+Accenture,Associate Software Engineer,Aptitude,Percentages,A shirt costs 800 and is sold for 960. What is the profit percentage?,Aptitude,Easy,"The profit is 160, so the profit percentage is 20%."
+Accenture,Associate Software Engineer,Aptitude,Average,"What is the average of 10, 20, 30, 40, and 50?",Aptitude,Easy,The average is 30 because the sum is 150 and there are 5 numbers.
+Accenture,Associate Software Engineer,Aptitude,Speed Distance,A car travels 120 km in 3 hours. What is its average speed?,Aptitude,Easy,The average speed is 40 km/h.
+Accenture,Associate Software Engineer,HR,Teamwork,Describe a situation where you worked as part of a team.,Behavioral,Easy,"A strong answer should describe the situation, the candidate's responsibility, how they collaborated, and the result."
+Accenture,Associate Software Engineer,HR,Problem Solving,How do you approach a difficult problem?,Behavioral,Easy,"A strong approach is to understand the problem, break it into smaller parts, evaluate possible solutions, implement one, and verify the result."
+Accenture,Associate Software Engineer,Software Engineering,Version Control,What is version control and why is it used?,Technical,Easy,"Version control tracks changes to source code, supports collaboration, and allows developers to review or restore previous versions."
+,,,,,,,
+,,,,,,,
+Wipro,Full Stack Developer,Web Development,HTML,What is HTML?,Technical,Easy,HTML is a markup language used to structure the content and elements of web pages.
+Wipro,Full Stack Developer,Web Development,CSS,What is the purpose of CSS?,Technical,Easy,"CSS is used to control the presentation, layout, styling, and appearance of web pages."
+Wipro,Full Stack Developer,JavaScript,JavascriptBasics,What is JavaScript?,Technical,Easy,JavaScript is a programming language commonly used to add dynamic behavior and interactivity to web applications.
+Wipro,Full Stack Developer,JavaScript,DOM,What is the DOM?,Technical,Easy,The DOM is a programming interface that represents an HTML document as a tree of objects that scripts can manipulate.
+Wipro,Full Stack Developer,JavaScript,Events,What is event handling in JavaScript?,Technical,Easy,"Event handling allows JavaScript to respond to actions such as clicks, keyboard input, and form submissions."
+Wipro,Full Stack Developer,Frontend,Responsive Design,What is responsive web design?,Technical,Easy,Responsive web design makes a website adapt its layout and content to different screen sizes and devices.
+Wipro,Full Stack Developer,Backend,PHP,What is PHP?,Technical,Easy,PHP is a server-side scripting language commonly used to build dynamic web applications.
+Wipro,Full Stack Developer,Backend,APIs,What is an API?,Technical,Easy,An API is an interface that allows different software components or applications to communicate with each other.
+Wipro,Full Stack Developer,Backend,REST,What is REST?,Technical,Medium,REST is an architectural style for designing web services around resources and standard HTTP methods.
+Wipro,Full Stack Developer,Backend,HTTP,What are common HTTP methods?,Technical,Easy,"Common HTTP methods include GET, POST, PUT, PATCH, and DELETE, each representing a different type of operation."
+Wipro,Full Stack Developer,DBMS,SQL,What is SQL?,Technical,Easy,"SQL is a language used to create, query, update, and manage data in relational databases."
+Wipro,Full Stack Developer,DBMS,Joins,What is a SQL join?,Technical,Easy,A SQL join combines rows from two or more tables based on a related column or condition.
+Wipro,Full Stack Developer,DBMS,Normalization,Why is database normalization important?,Technical,Easy,Normalization reduces unnecessary data duplication and helps maintain data consistency.
+Wipro,Full Stack Developer,DBMS,Transactions,What is a database transaction?,Technical,Easy,A database transaction is a logical unit of operations that should be completed reliably as a whole.
+Wipro,Full Stack Developer,OOP,Encapsulation,What is encapsulation?,Technical,Easy,Encapsulation combines data and methods within a class and controls access to the internal state.
+Wipro,Full Stack Developer,OOP,Inheritance,What is inheritance?,Technical,Easy,Inheritance allows a class to reuse or extend properties and behavior defined by another class.
+Wipro,Full Stack Developer,DSA,Arrays,How do you find the largest element in an array?,Technical,Easy,Traverse the array while maintaining the largest value found so far.
+Wipro,Full Stack Developer,DSA,Searching,What is binary search?,Technical,Easy,Binary search repeatedly divides a sorted search space in half to efficiently locate a target element.
+Wipro,Full Stack Developer,DSA,Stack,What is a stack?,Technical,Easy,A stack is a linear data structure that follows the LIFO principle.
+Wipro,Full Stack Developer,DSA,Queue,What is a queue?,Technical,Easy,A queue is a linear data structure that follows the FIFO principle.
+Wipro,Full Stack Developer,Computer Networks,HTTP HTTPS,What is the difference between HTTP and HTTPS?,Technical,Easy,HTTPS uses TLS to encrypt HTTP communication and helps protect data exchanged between client and server.
+Wipro,Full Stack Developer,Computer Networks,DNS,What does DNS do?,Technical,Easy,DNS translates domain names into IP addresses so clients can locate network services.
+Wipro,Full Stack Developer,Software Engineering,Git,What is Git?,Technical,Easy,Git is a distributed version control system used to track code changes and support collaboration.
+Wipro,Full Stack Developer,Software Engineering,Debugging,How do you debug a web application?,Technical,Medium,"A systematic approach is to reproduce the issue, inspect errors and logs, identify the root cause, apply a focused fix, and test the result."
+Wipro,Full Stack Developer,Aptitude,Percentages,A product costs 500 and its price increases by 20%. What is the new price?,Aptitude,Easy,The new price is 600 because 20% of 500 is 100.
+Wipro,Full Stack Developer,Aptitude,Profit and Loss,An item is bought for 800 and sold for 1000. What is the profit percentage?,Aptitude,Easy,"The profit is 200, so the profit percentage is 25%."
+Wipro,Full Stack Developer,Aptitude,Average,"What is the average of 15, 20, and 25?",Aptitude,Easy,The average is 20 because the sum is 60 and there are 3 numbers.
+Wipro,Full Stack Developer,HR,Introduction,Tell me about yourself.,Behavioral,Easy,"A strong answer briefly covers education, relevant technical skills, projects or achievements, and career goals."
+Wipro,Full Stack Developer,HR,Teamwork,How do you handle a disagreement with a teammate?,Behavioral,Easy,"I would listen to the teammate, understand the different viewpoints, focus on the shared goal, and agree on a practical solution."
+Wipro,Full Stack Developer,HR,Learning,How do you learn a new technology?,Behavioral,Easy,"I start with the fundamentals, use reliable documentation or learning resources, build a small project, and practice the technology."

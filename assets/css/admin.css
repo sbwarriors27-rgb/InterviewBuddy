@@ -1,0 +1,4 @@
+.ib-sidebar { background: #1e1e2d; }
+.ib-sidebar li a { color: #cbd5e1; }
+.ib-sidebar li.active a, .ib-sidebar li a:hover { background: #2d2d44; color: #fff; border-left: 3px solid var(--primary); }
+.action-buttons { display: flex; gap: 8px; }
