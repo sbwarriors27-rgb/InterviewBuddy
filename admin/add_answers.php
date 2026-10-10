@@ -22,17 +22,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_answer'])) {
 $company = $_GET['company'] ?? '';
 $subject = $_GET['subject'] ?? '';
 
-$sql = "SELECT q.question_id, q.question, q.type, q.difficulty, c.company_name, s.subject_name, a.ideal_answer
+$sql = "SELECT q.question_id, q.question, q.type, q.difficulty, e.exp_id,
+               COALESCE(c.company_name, 'Unlinked question') AS company_name,
+               s.subject_name, a.ideal_answer
         FROM questions q
-        JOIN interview_experiences e ON q.exp_id = e.exp_id
-        JOIN companies c ON e.company_id = c.company_id
+        LEFT JOIN interview_experiences e ON q.exp_id = e.exp_id
+        LEFT JOIN companies c ON q.company_id = c.company_id
         LEFT JOIN subjects s ON q.subject_id = s.subject_id
         LEFT JOIN answers a ON a.question_id = q.question_id
         WHERE q.status = 'Approved'";
 $params = [];
 if ($company !== '') { $sql .= " AND c.company_id = ?"; $params[] = $company; }
 if ($subject !== '') { $sql .= " AND q.subject_id = ?"; $params[] = $subject; }
-$sql .= " ORDER BY (a.ideal_answer IS NULL) DESC, q.created_at DESC LIMIT 100";
+$sql .= " ORDER BY (a.ideal_answer IS NULL OR TRIM(a.ideal_answer) = '') DESC, q.created_at DESC";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
@@ -76,7 +78,7 @@ include __DIR__ . '/../includes/navbar.php';
 
         <?php foreach ($questions as $q): ?>
         <div class="ib-card">
-            <p style="color:var(--muted); margin:0 0 6px;"><?= e($q['company_name']) ?> · <?= e($q['subject_name'] ?? '—') ?> · <?= e($q['type']) ?> · <?= e($q['difficulty']) ?></p>
+            <p style="color:var(--muted); margin:0 0 6px;"><?= e($q['company_name']) ?> · <?= e($q['subject_name'] ?? '—') ?> · <?= e($q['type']) ?> · <?= e($q['difficulty']) ?><?= !$q['exp_id'] ? ' · Unlinked from an experience' : '' ?></p>
             <h3 style="margin-top:0;">Q. <?= e($q['question']) ?></h3>
             <form method="POST">
                 <input type="hidden" name="save_answer" value="1">

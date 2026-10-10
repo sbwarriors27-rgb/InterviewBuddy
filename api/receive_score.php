@@ -18,7 +18,7 @@ if (!isStudentLoggedIn()) {
 
 $response_id = (int)($_POST['response_id'] ?? 0);
 
-$stmt = $pdo->prepare("SELECT r.response_id, r.student_answer, a.ideal_answer
+$stmt = $pdo->prepare("SELECT r.response_id, r.student_answer, q.question, a.ideal_answer
                         FROM responses r
                         JOIN mock_tests m ON r.mock_id = m.mock_id
                         JOIN questions q ON r.question_id = q.question_id
@@ -33,7 +33,7 @@ if (!$row) {
     exit;
 }
 
-$result = evaluateAnswer($row['student_answer'], $row['ideal_answer']);
+$result = evaluateAnswer($row['student_answer'], $row['ideal_answer'], $row['question']);
 
 $upd = $pdo->prepare("UPDATE responses SET score=?, feedback=? WHERE response_id=?");
 $upd->execute([$result['score'], $result['feedback'], $response_id]);

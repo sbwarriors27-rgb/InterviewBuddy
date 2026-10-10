@@ -6,8 +6,8 @@ Listens on http://127.0.0.1:5000
 
 Endpoint:
   POST /evaluate
-  Body (JSON): { "student_answer": "...", "ideal_answer": "..." }
-  Response:    { "score": 82.5, "feedback": "..." }
+  Body (JSON): { "student_answer": "...", "ideal_answer": "...", "question": "..." }
+  Response:    { "score": 82.5, "status": "evaluated", "feedback": "..." }
 """
 
 from flask import Flask, request, jsonify
@@ -29,11 +29,17 @@ def evaluate():
     if request.method == "OPTIONS":
         return jsonify({}), 200
 
-    data = request.get_json(silent=True) or {}
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"error": "A JSON object is required."}), 400
+
     student_answer = data.get("student_answer", "")
     ideal_answer = data.get("ideal_answer", "")
+    question = data.get("question", "")
+    if not all(isinstance(value, str) for value in (student_answer, ideal_answer, question)):
+        return jsonify({"error": "Answer, reference answer, and question must be strings."}), 400
 
-    result = evaluate_answer(student_answer, ideal_answer)
+    result = evaluate_answer(student_answer, ideal_answer, question)
     return jsonify(result)
 
 

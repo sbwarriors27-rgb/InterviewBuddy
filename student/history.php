@@ -5,7 +5,10 @@ requireStudentLogin();
 
 $user_id = $_SESSION['user_id'];
 
-$stmt = $pdo->prepare("SELECT m.*, c.company_name FROM mock_tests m
+$stmt = $pdo->prepare("SELECT m.*, c.company_name,
+                               EXISTS(SELECT 1 FROM responses r WHERE r.mock_id = m.mock_id
+                                      AND r.feedback LIKE '%scored as neutral%') AS has_legacy_score
+                        FROM mock_tests m
                         JOIN companies c ON m.company_id = c.company_id
                         WHERE m.user_id = ? ORDER BY m.start_time DESC");
 $stmt->execute([$user_id]);
@@ -37,7 +40,8 @@ include __DIR__ . '/../includes/navbar.php';
                 <tr>
                     <td><?= e($m['company_name']) ?></td>
                     <td><?= e($m['role']) ?></td>
-                    <td><?= $m['score'] !== null ? round($m['score']).'%' : '—' ?></td>
+                    <td><?= $m['score'] !== null ? number_format((float)$m['score'], 1).'%' : '—' ?>
+                        <?= $m['has_legacy_score'] ? '<small>(legacy, unreliable)</small>' : '' ?></td>
                     <td><span class="badge <?= $m['status']=='Completed'?'badge-approved':'badge-pending' ?>"><?= e($m['status']) ?></span></td>
                     <td><?= date('d M Y', strtotime($m['start_time'])) ?></td>
                     <td>

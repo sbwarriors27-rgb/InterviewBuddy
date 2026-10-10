@@ -1,95 +1,221 @@
-"""
-Interview Buddy - Answer Evaluation Model
--------------------------------------------
-Compares a student's answer against the administrator-approved ideal answer
-and produces a similarity-based score (0-100) plus short feedback.
+"""Conservative reference-based scoring shared with the PHP mock-test flow.
 
-Primary method: TF-IDF vectorization + cosine similarity (scikit-learn).
-Fallback method (if scikit-learn isn't installed): difflib sequence matching.
+This is an explainable lexical rubric, not a semantic or factual-reasoning model.
+It only credits reference concepts supported by multiple matching terms and
+discounts answers padded with unrelated content.
 """
 
+import math
 import re
-from pathlib import Path
 
-try:
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.metrics.pairwise import cosine_similarity
-    SKLEARN_AVAILABLE = True
-except ImportError:
-    SKLEARN_AVAILABLE = False
-
-import difflib
-
-try:
-    from joblib import load
-except ImportError:
-    load = None
-
-
-MODEL_PATH = Path(__file__).with_name("model.joblib")
-TRAINED_MODEL = load(MODEL_PATH) if load and MODEL_PATH.exists() else None
-
-
-def _clean(text: str) -> str:
-    text = text or ""
-    text = text.lower().strip()
-    text = re.sub(r"\s+", " ", text)
-    return text
-
-
-def _tfidf_similarity(student_answer: str, ideal_answer: str) -> float:
-    vectorizer = TfidfVectorizer(stop_words="english")
-    tfidf = vectorizer.fit_transform([student_answer, ideal_answer])
-    sim = cosine_similarity(tfidf[0:1], tfidf[1:2])[0][0]
-    return float(sim)
+STOP_WORDS = set(
+    "a an the is are was were be been being of to for in on at by with from as "
+    "it this that these those into than then which who how what when where why "
+    "and or but so because while whereas meaning also can may might should "
+    "would could will do does did has have had its their your our i we you they "
+    "he she them us me my very more most some such only each all about after "
+    "before across using used use another related together within "
+    "both per if no yes mean"
+    .split()
+)
+CONTRADICTION_PAIRS = (
+    ("lifo", "fifo"),
+    ("yes", "no"),
+    ("same", "different"),
+    ("increase", "decrease"),
+    ("higher", "lower"),
+    ("more", "less"),
+    ("before", "after"),
+    ("reliable", "unreliable"),
+    ("ordered", "unordered"),
+    ("true", "false"),
+)
+CLAUSE_SPLIT = re.compile(
+    r"[.!?;]+|\b(?:which\s+means|while|whereas|but|and|so|because|meaning)\b",
+    re.IGNORECASE,
+)
 
 
-def _difflib_similarity(student_answer: str, ideal_answer: str) -> float:
-    return difflib.SequenceMatcher(None, student_answer, ideal_answer).ratio()
+def _normalized_text(text: str) -> str:
+    text = (text or "").strip().lower()
+    text = re.sub(r"\blast\s+in\s+first\s+out\b", " lifo ", text)
+    text = re.sub(r"\bfirst\s+in\s+first\s+out\b", " fifo ", text)
+    return text.replace("contiguously", " contiguous ").replace("contiguous", " contiguous ")
 
 
-def _trained_score(student_answer: str, ideal_answer: str) -> float:
-    text = f"student: {student_answer} ideal: {ideal_answer}"
-    return float(TRAINED_MODEL.predict([text])[0])
+def _tokens(text: str) -> list[str]:
+    tokens = re.findall(r"[a-z]+|\d+(?:\.\d+)?", _normalized_text(text))
+    normalized = []
+    for token in tokens:
+        if len(token) > 4 and token.endswith("ies"):
+            token = token[:-3] + "y"
+        elif len(token) > 4 and token.endswith("ing"):
+            token = token[:-3]
+        elif len(token) > 3 and token.endswith("ed"):
+            token = token[:-2]
+        elif len(token) > 3 and token.endswith("s"):
+            token = token[:-1]
+        if token not in STOP_WORDS:
+            normalized.append(token)
+    return normalized
 
 
-def evaluate_answer(student_answer: str, ideal_answer: str) -> dict:
-    """
-    Returns:
-        {
-          "score": float (0-100),
-          "feedback": str
-        }
-    """
-    student_clean = _clean(student_answer)
-    ideal_clean = _clean(ideal_answer)
+def _clauses(text: str) -> list[str]:
+    return [clause.strip() for clause in CLAUSE_SPLIT.split(_normalized_text(text)) if clause.strip()]
 
-    if not student_clean:
-        return {"score": 0.0, "feedback": "No answer was submitted for this question."}
 
-    if not ideal_clean:
-        return {"score": 50.0, "feedback": "No ideal answer on file yet — scored as neutral."}
+def _is_meaningful(answer: str) -> bool:
+    answer = (answer or "").strip().lower()
+    if not answer:
+        return False
+    compact = re.sub(r"[^a-z0-9]", "", answer)
+    if re.fullmatch(r"(.)\1{5,}", compact):
+        return False
+    letters = "".join(re.findall(r"[a-z]+", answer))
+    if len(letters) >= 8 and sum(char in "aeiou" for char in letters) / len(letters) < 0.12:
+        return False
+    return bool(_tokens(answer))
 
-    try:
-        if TRAINED_MODEL is not None:
-            similarity = max(0.0, min(100.0, _trained_score(student_clean, ideal_clean))) / 100.0
-        elif SKLEARN_AVAILABLE and len(student_clean.split()) > 1 and len(ideal_clean.split()) > 1:
-            similarity = _tfidf_similarity(student_clean, ideal_clean)
-        else:
-            similarity = _difflib_similarity(student_clean, ideal_clean)
-    except ValueError:
-        # e.g. TF-IDF vocabulary ends up empty (answers are only stopwords)
-        similarity = _difflib_similarity(student_clean, ideal_clean)
 
-    score = round(min(1.0, max(0.0, similarity)) * 100, 1)
+def _concepts(reference_answer: str) -> list[dict]:
+    concepts = []
+    for clause in _clauses(reference_answer):
+        tokens = list(dict.fromkeys(_tokens(clause)))
+        if len(tokens) == 1 and tokens[0] in {"no", "yes"}:
+            continue
+        if tokens:
+            concepts.append({"text": clause, "tokens": tokens})
+    return concepts
 
-    if score >= 75:
-        feedback = "Excellent! Your answer closely matches the expected response."
-    elif score >= 50:
-        feedback = "Good attempt, but some key points are missing compared to the ideal answer."
-    elif score >= 25:
-        feedback = "Partially correct. Review this topic and try to include more relevant details."
+
+def _contrast_tokens(text: str) -> list[str]:
+    text = (text or "").strip().lower()
+    text = re.sub(r"\blast\s+in\s+first\s+out\b", " lifo ", text)
+    text = re.sub(r"\bfirst\s+in\s+first\s+out\b", " fifo ", text)
+    return re.findall(r"[a-z]+|\d+(?:\.\d+)?", text)
+
+
+def _has_shared_phrase(reference_tokens: list[str], answer_clauses: list[list[str]]) -> bool:
+    if len(reference_tokens) == 1:
+        return any(reference_tokens[0] in clause for clause in answer_clauses)
+    return any(
+        reference_tokens[index : index + 2] == clause[position : position + 2]
+        for index in range(len(reference_tokens) - 1)
+        for clause in answer_clauses
+        for position in range(len(clause) - 1)
+    )
+
+
+def _result(score, status, feedback, correct=None, missing=None) -> dict:
+    return {
+        "score": score,
+        "status": status,
+        "feedback": feedback,
+        "correct_concepts": correct or [],
+        "missing_concepts": missing or [],
+    }
+
+
+def evaluate_answer(student_answer: str, ideal_answer: str, question: str = "") -> dict:
+    """Return a 0-100 score, or ``None`` when a reference is not evaluable."""
+    student_answer = (student_answer or "").strip()
+    ideal_answer = (ideal_answer or "").strip()
+    question = (question or "").strip()
+
+    if not student_answer:
+        return _result(
+            0.0, "evaluated", "No answer was submitted. The answer receives 0/100."
+        )
+    if not _is_meaningful(student_answer):
+        return _result(
+            0.0,
+            "evaluated",
+            "Your response does not contain a meaningful answer to the question. "
+            "Review the reference answer and try again. Score: 0/100.",
+        )
+    if not ideal_answer:
+        return _result(
+            None,
+            "unavailable",
+            "Evaluation unavailable — reference answer missing.",
+        )
+
+    concepts = _concepts(ideal_answer)
+    answer_tokens = _tokens(student_answer)
+    answer_token_set = set(answer_tokens)
+    answer_clauses = [_tokens(clause) for clause in _clauses(student_answer)]
+    answer_clauses = [clause for clause in answer_clauses if clause]
+    reference_token_set = {
+        token for concept in concepts for token in concept["tokens"]
+    }
+    if len(reference_token_set) < 2:
+        return _result(
+            None,
+            "unavailable",
+            "Evaluation unavailable — the reference answer does not contain "
+            "enough detail for a reliable rubric.",
+        )
+
+    answer_contrast_set = set(_contrast_tokens(student_answer))
+    reference_contrast_set = set(_contrast_tokens(ideal_answer))
+    answer_has_contradiction = False
+    reference_has_contradiction = False
+    for first, second in CONTRADICTION_PAIRS:
+        if (first in reference_contrast_set and second in answer_contrast_set) or (
+            second in reference_contrast_set and first in answer_contrast_set
+        ):
+            answer_has_contradiction = True
+        if first in reference_contrast_set and second in reference_contrast_set:
+            reference_has_contradiction = True
+    contradictory = answer_has_contradiction and not reference_has_contradiction
+
+    correct_concepts = []
+    missing_concepts = []
+    credited_tokens = 0
+    total_reference_tokens = 0
+    for concept in concepts:
+        tokens = concept["tokens"]
+        total_reference_tokens += len(tokens)
+        matched = [token for token in tokens if token in answer_token_set]
+        phrase = _has_shared_phrase(tokens, answer_clauses)
+        required_matches = max(2, math.ceil(len(tokens) * 0.5))
+        supported = len(matched) >= required_matches and (
+            phrase or len(matched) >= math.ceil(len(tokens) * 0.75)
+        )
+        if supported:
+            correct_concepts.append(concept["text"])
+            credited_tokens += len(matched)
+        if not supported or len(matched) < len(tokens):
+            missing_concepts.append(concept["text"])
+
+    matched_answer_tokens = len(answer_token_set & reference_token_set)
+    precision = matched_answer_tokens / len(answer_token_set) if answer_token_set else 0
+    score = (
+        0.0
+        if contradictory or not total_reference_tokens
+        else round(
+            100 * (credited_tokens / total_reference_tokens) * precision, 1
+        )
+    )
+    score = min(100.0, max(0.0, score))
+
+    question_context = f'For "{question}", ' if question else ""
+    if score >= 90:
+        opening = question_context + "your answer covers nearly all concepts in the reference."
+    elif score > 0:
+        opening = (
+            question_context
+            + "your answer demonstrates some of the concepts in the reference, but is incomplete."
+        )
     else:
-        feedback = "Your answer differs significantly from the ideal answer. Revise this concept."
+        opening = question_context + "your answer does not demonstrate the key concepts in the reference."
+    correct_text = "; ".join(correct_concepts) if correct_concepts else "none identified"
+    missing_text = "; ".join(missing_concepts) if missing_concepts else "none identified"
+    feedback = (
+        f"{opening} Score: {score:.1f}/100. Correct concepts: {correct_text}. "
+        f"Missing or unclear concepts: {missing_text}."
+    )
+    if contradictory:
+        feedback += " The answer also states a concept that conflicts with the reference."
 
-    return {"score": score, "feedback": feedback}
+    return _result(score, "evaluated", feedback, correct_concepts, missing_concepts)

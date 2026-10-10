@@ -49,22 +49,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['start_mock'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_answer'])) {
     $response_id = (int)$_POST['response_id'];
     $answer = trim($_POST['answer'] ?? '');
-    $stmt = $pdo->prepare("UPDATE responses SET student_answer = ? WHERE response_id = ?
-                            AND mock_id IN (SELECT mock_id FROM mock_tests WHERE user_id = ?)");
-    $stmt->execute([$answer, $response_id, $user_id]);
-
-    $nextQ = (int)$_POST['next_index'];
     $mid = (int)$_POST['mock_id'];
+    $nextQ = (int)($_POST['next_index'] ?? ($_GET['q'] ?? 0));
+
+    $ownership = $pdo->prepare("SELECT mock_id FROM mock_tests WHERE mock_id = ? AND user_id = ?");
+    $ownership->execute([$mid, $user_id]);
+    if (!$ownership->fetchColumn()) {
+        http_response_code(403);
+        exit('You are not allowed to update this mock interview.');
+    }
+
+    $stmt = $pdo->prepare("UPDATE responses SET student_answer = ? WHERE response_id = ? AND mock_id = ?");
+    $stmt->execute([$answer, $response_id, $mid]);
+    if ($stmt->rowCount() === 0) {
+        $checkResponse = $pdo->prepare("SELECT response_id FROM responses WHERE response_id = ? AND mock_id = ?");
+        $checkResponse->execute([$response_id, $mid]);
+        if (!$checkResponse->fetchColumn()) {
+            http_response_code(404);
+            exit('The answer could not be saved because this question was not found.');
+        }
+    }
 
     if (isset($_POST['finish'])) {
-        $ownership = $pdo->prepare("SELECT mock_id FROM mock_tests WHERE mock_id = ? AND user_id = ?");
-        $ownership->execute([$mid, $user_id]);
-        if (!$ownership->fetchColumn()) {
-            http_response_code(403);
-            exit('You are not allowed to submit this mock interview.');
-        }
         require_once __DIR__ . '/../api/send_to_ml.php';
-        evaluateMockTest($pdo, $mid);
+        try {
+            evaluateMockTest($pdo, $mid);
+        } catch (Throwable $error) {
+            error_log('Mock interview evaluation failed for mock ' . $mid . ': ' . $error->getMessage());
+            http_response_code(500);
+            exit('Your answers were saved, but scoring could not be completed. Please try submitting again or contact an administrator.');
+        }
         header("Location: " . siteUrl("student/result.php?mock_id=$mid"));
         exit;
     }
@@ -87,7 +101,7 @@ if ($mock_id) {
     $responses = $stmt->fetchAll();
 
     $idx = max(0, min(count($responses) - 1, (int)($_GET['q'] ?? 0)));
-    $current = $responses[$idx];
+    $currentResponse = $responses[$idx];
 
     $pageTitle = 'Mock Interview';
     $sidebarType = 'student';
@@ -103,15 +117,15 @@ if ($mock_id) {
                     <span>Company: <strong><?= e($mock['company_name']) ?></strong></span>
                     <span>Role: <strong><?= e($mock['role']) ?></strong></span>
                 </div>
-                <h3 style="margin-top:18px;">Q<?= $idx+1 ?>. <?= e($current['question']) ?></h3>
-                <span class="badge badge-pending"><?= e($current['type']) ?> · <?= e($current['difficulty']) ?></span>
+                <h3 style="margin-top:18px;">Q<?= $idx+1 ?>. <?= e($currentResponse['question']) ?></h3>
+                <span class="badge badge-pending"><?= e($currentResponse['type']) ?> · <?= e($currentResponse['difficulty']) ?></span>
 
                 <form method="POST" style="margin-top:16px;">
                     <input type="hidden" name="save_answer" value="1">
                     <input type="hidden" name="mock_id" value="<?= $mock_id ?>">
-                    <input type="hidden" name="response_id" value="<?= $current['response_id'] ?>">
+                    <input type="hidden" name="response_id" value="<?= $currentResponse['response_id'] ?>">
                     <div class="ib-form-group">
-                        <textarea name="answer" rows="6" placeholder="Write your answer here..."><?= e($current['student_answer']) ?></textarea>
+                        <textarea name="answer" rows="6" placeholder="Write your answer here..."><?= e($currentResponse['student_answer']) ?></textarea>
                     </div>
                     <div style="display:flex; justify-content:space-between;">
                         <?php if ($idx > 0): ?>
